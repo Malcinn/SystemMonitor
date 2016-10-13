@@ -2,9 +2,6 @@ package pl.lodz.uni.math.app.systemmanager.client;
 
 import java.io.IOException;
 
-import javax.net.ServerSocketFactory;
-import javax.net.SocketFactory;
-
 public class Application {
 
 	private static final String SERVER_ADDRESS = "127.0.0.1";
