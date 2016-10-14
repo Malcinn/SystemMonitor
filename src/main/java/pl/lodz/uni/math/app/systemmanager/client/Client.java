@@ -1,7 +1,10 @@
 package pl.lodz.uni.math.app.systemmanager.client;
 
 import java.io.IOException;
-import javax.net.SocketFactory;
+import java.util.concurrent.ThreadFactory;
+
+import pl.lodz.uni.math.app.systemmanager.client.services.ClientListenerFactory;
+import pl.lodz.uni.math.app.systemmanager.client.services.SenderFactory;
 
 public class Client {
 
@@ -10,6 +13,12 @@ public class Client {
 	private String serverAddress = null;
 
 	private int serverPortNumber = 0;
+
+	private ThreadFactory threadFactory = null;
+
+	private ClientListenerFactory clientListenerFactory;
+
+	private SenderFactory senderFactory = null;
 
 	/**
 	 * Constructor with parameters.
@@ -22,7 +31,12 @@ public class Client {
 	 *            - port number on which server application runs
 	 * @throws IOException
 	 */
-	public Client(int localPortNumber, String serverAddress, int serverPortNumber) {
+
+	public Client(ThreadFactory threadFactory, ClientListenerFactory clientListenerFactory, SenderFactory senderFactory,
+			int localPortNumber, String serverAddress, int serverPortNumber) {
+		this.threadFactory = threadFactory;
+		this.clientListenerFactory = clientListenerFactory;
+		this.senderFactory = senderFactory;
 		this.localPortNumber = localPortNumber;
 		this.serverAddress = serverAddress;
 		this.serverPortNumber = serverPortNumber;
@@ -30,9 +44,9 @@ public class Client {
 
 	public void run() throws IOException, ClassNotFoundException {
 		try {
-			ClientListener clientListener = new ClientListener(localPortNumber);
-			new Thread(clientListener).start();
-			Sender sender = new Sender(SocketFactory.getDefault().createSocket(serverAddress, serverPortNumber));
+			ClientListener clientListener = clientListenerFactory.createClientListener(localPortNumber, true);
+			threadFactory.newThread(clientListener).start();
+			Sender sender = senderFactory.createSender(serverAddress, serverPortNumber);
 			sender.sendData(clientListener.getSocketInfo());
 			sender.closeConnections();
 		} catch (IOException e) {
