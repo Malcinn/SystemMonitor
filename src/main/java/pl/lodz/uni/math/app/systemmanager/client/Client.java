@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.concurrent.ThreadFactory;
 
 import pl.lodz.uni.math.app.systemmanager.client.services.ClientListenerFactory;
-import pl.lodz.uni.math.app.systemmanager.client.services.SenderFactory;
-
+import pl.lodz.uni.math.app.systemmanager.client.services.ClientSenderFactory;
 public class Client {
-
+	
 	private int localPortNumber = 0;
 
 	private String serverAddress = null;
@@ -18,7 +17,7 @@ public class Client {
 
 	private ClientListenerFactory clientListenerFactory;
 
-	private SenderFactory senderFactory = null;
+	private ClientSenderFactory senderFactory = null;
 
 	/**
 	 * Constructor with parameters.
@@ -32,7 +31,7 @@ public class Client {
 	 * @throws IOException
 	 */
 
-	public Client(ThreadFactory threadFactory, ClientListenerFactory clientListenerFactory, SenderFactory senderFactory,
+	public Client(ThreadFactory threadFactory, ClientListenerFactory clientListenerFactory, ClientSenderFactory senderFactory,
 			int localPortNumber, String serverAddress, int serverPortNumber) {
 		this.threadFactory = threadFactory;
 		this.clientListenerFactory = clientListenerFactory;
@@ -46,7 +45,7 @@ public class Client {
 		try {
 			ClientListener clientListener = clientListenerFactory.createClientListener(localPortNumber, true);
 			threadFactory.newThread(clientListener).start();
-			Sender sender = senderFactory.createSender(serverAddress, serverPortNumber);
+			ClientSender sender = senderFactory.createSender(serverAddress, serverPortNumber);
 			sender.sendData(clientListener.getSocketInfo());
 			sender.closeConnections();
 		} catch (IOException e) {

@@ -5,10 +5,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.lodz.uni.math.app.systemmanager.shared.CommunicationProtocol;
 
 public class ClientThread implements Runnable {
 
+	private static final Logger log = LogManager.getLogger(ClientThread.class.getName());
+	
 	private Socket socket = null;
 
 	private ObjectOutputStream out = null;
@@ -37,8 +42,7 @@ public class ClientThread implements Runnable {
 			Object response = processRequest(request);
 			sendResponse(response);
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error ocured while ", e);
 		} finally {
 			try {
 				closeConnections();

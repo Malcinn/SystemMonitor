@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Sender {
+public class ClientSender {
 
 	private Socket socket = null;
 
 	private ObjectOutputStream out = null;
 
-	public Sender(Socket socket) throws IOException {
+	public ClientSender(Socket socket) throws IOException {
 		this.socket = socket;
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
