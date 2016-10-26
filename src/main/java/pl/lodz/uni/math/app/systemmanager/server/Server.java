@@ -3,8 +3,6 @@ package pl.lodz.uni.math.app.systemmanager.server;
 import java.io.IOException;
 import java.util.concurrent.ThreadFactory;
 
-import pl.lodz.uni.math.app.systemmanager.server.services.ServerListenerFactory;
-
 public class Server {
 
 	private int localPortNumber = 0;

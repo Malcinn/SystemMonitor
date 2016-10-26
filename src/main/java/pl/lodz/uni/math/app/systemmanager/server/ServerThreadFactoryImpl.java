@@ -1,4 +1,4 @@
-package pl.lodz.uni.math.app.systemmanager.server.services;
+package pl.lodz.uni.math.app.systemmanager.server;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import pl.lodz.uni.math.app.systemmanager.server.ServerThread;
 import pl.lodz.uni.math.app.systemmanager.server.services.dao.DataBaseGenericDaoImpl;
 import pl.lodz.uni.math.app.systemmanager.server.services.dao.MyEntityManagerFactory;
 import pl.lodz.uni.math.app.systemmanager.shared.SocketInfo;

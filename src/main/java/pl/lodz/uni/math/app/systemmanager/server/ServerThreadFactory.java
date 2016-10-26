@@ -1,9 +1,7 @@
-package pl.lodz.uni.math.app.systemmanager.server.services;
+package pl.lodz.uni.math.app.systemmanager.server;
 
 import java.io.IOException;
 import java.net.Socket;
-
-import pl.lodz.uni.math.app.systemmanager.server.ServerThread;
 
 public interface ServerThreadFactory {
 

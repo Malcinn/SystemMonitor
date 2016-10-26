@@ -12,7 +12,6 @@ import javax.persistence.Persistence;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import pl.lodz.uni.math.app.systemmanager.server.services.ServerThreadFactoryImpl;
 import pl.lodz.uni.math.app.systemmanager.server.services.dao.GenericDao;
 import pl.lodz.uni.math.app.systemmanager.shared.SocketInfo;
 

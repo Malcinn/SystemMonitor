@@ -1,11 +1,10 @@
-package pl.lodz.uni.math.app.systemmanager.server.services;
+package pl.lodz.uni.math.app.systemmanager.server;
 
 import java.io.IOException;
 import java.util.concurrent.ThreadFactory;
 
 import javax.net.ServerSocketFactory;
 
-import pl.lodz.uni.math.app.systemmanager.server.ServerListener;
 import pl.lodz.uni.math.app.systemmanager.shared.services.ThreadFactoryImpl;
 
 public class ServerListenerFactoryImpl implements ServerListenerFactory {

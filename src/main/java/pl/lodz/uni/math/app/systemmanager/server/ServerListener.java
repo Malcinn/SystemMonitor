@@ -8,8 +8,6 @@ import java.util.concurrent.ThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import pl.lodz.uni.math.app.systemmanager.server.services.ServerThreadFactory;
-
 public class ServerListener implements Runnable {
 
 	private static final Logger log = LogManager.getLogger(ServerListener.class.getName());
