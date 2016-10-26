@@ -1,4 +1,4 @@
-package pl.lodz.uni.math.app.systemmanager.shared;
+package pl.lodz.uni.math.app.systemmanager;
 
 public class StaticValues {
 

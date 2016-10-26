@@ -7,6 +7,6 @@ import pl.lodz.uni.math.app.systemmanager.server.ServerThread;
 
 public interface ServerThreadFactory {
 
-	public ServerThread newserverThread(Socket socket) throws IOException;
+	public ServerThread newServerThread(Socket socket) throws IOException;
 
 }

@@ -33,15 +33,18 @@ public class ServerListener implements Runnable {
 	@Override
 	public void run() {
 		while (isActive()) {
-			Socket socket;
 			try {
-				socket = serverSocket.accept();
-				ServerThread serverThread = serverThreadFactory.newserverThread(socket);
+				Socket socket = serverSocket.accept();
+				ServerThread serverThread = serverThreadFactory.newServerThread(socket);
 				threadFactory.newThread(serverThread).start();
 			} catch (IOException e) {
 				log.error("IOException ecurred while performing run() method of ServerListener object. Exception:", e);
+				try {
+					closeConnections();
+				} catch (IOException e1) {
+					log.error("IOException ecurred while closing the connections. Exception:", e1);
+				}
 			}
-
 		}
 	}
 
@@ -53,4 +56,12 @@ public class ServerListener implements Runnable {
 		this.active = active;
 	}
 
+	private void closeConnections() throws IOException {
+		try {
+			this.setActive(false);
+			serverSocket.close();
+		} catch (IOException e) {
+			throw new IOException(e);
+		}
+	}
 }

@@ -5,9 +5,15 @@ import java.io.ObjectInputStream;
 
 import java.net.Socket;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import pl.lodz.uni.math.app.systemmanager.server.services.ServerThreadFactoryImpl;
+import pl.lodz.uni.math.app.systemmanager.server.services.dao.GenericDao;
 import pl.lodz.uni.math.app.systemmanager.shared.SocketInfo;
 
 public class ServerThread implements Runnable {
@@ -18,10 +24,13 @@ public class ServerThread implements Runnable {
 
 	private ObjectInputStream in = null;
 
-	public ServerThread(Socket socket) throws IOException {
+	private GenericDao<SocketInfo> socketInfoDao;
+	
+	public ServerThread(Socket socket, GenericDao<SocketInfo> socketInfoDao) throws IOException {
 		try {
 			this.socekt = socket;
 			this.in = new ObjectInputStream(socket.getInputStream());
+			this.socketInfoDao = socketInfoDao;
 		} catch (IOException e) {
 			throw new IOException(e);
 		}
@@ -60,7 +69,7 @@ public class ServerThread implements Runnable {
 		if (data != null) {
 			if (data instanceof SocketInfo) {
 				SocketInfo socketInfo = (SocketInfo) data;
-				System.out.println(socketInfo.toString());
+				socketInfoDao.create(socketInfo);
 			}
 		}
 	}

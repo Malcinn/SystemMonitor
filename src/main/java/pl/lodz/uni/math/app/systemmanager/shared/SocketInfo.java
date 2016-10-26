@@ -4,59 +4,55 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * The SocketInfo class stores informations about socket.
- * 
- * @author marcin
- *
- */
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
 public class SocketInfo implements Serializable {
 
-	/**
-	 * class version number.
-	 */
 	private static final long serialVersionUID = 1169939767666549706L;
 
+	@Id
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
+	private long id;
+
+	@Column
 	private String hostName = null;
 
+	@Column
 	private int port = 0;
 
-	/**
-	 * 
-	 * @param hostName
-	 *            - socket host name
-	 * @param port
-	 *            - socket port number
-	 */
+	public SocketInfo() {
+	}
+
 	public SocketInfo(String hostName, int port) {
 		setHostName(hostName);
 		setPort(port);
 	}
 
-	/**
-	 * 
-	 * @param socket
-	 *            - Socket which data will be stored in this class
-	 */
 	public SocketInfo(Socket socket) {
 		setHostName(socket.getLocalAddress().getHostAddress());
 		setPort(socket.getLocalPort());
 	}
 
-	/**
-	 * 
-	 * @param serverSocket
-	 *            - ServerSocket which data will be stored in this class
-	 */
 	public SocketInfo(ServerSocket serverSocket) {
 		setHostName(serverSocket.getInetAddress().getHostAddress());
 		setPort(serverSocket.getLocalPort());
 	}
 
-	/**
-	 * 
-	 * @return a String representing the host name
-	 */
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public String getHostName() {
 		return hostName;
 	}
@@ -65,10 +61,6 @@ public class SocketInfo implements Serializable {
 		this.hostName = hostName;
 	}
 
-	/**
-	 * 
-	 * @return a int representing the port number
-	 */
 	public int getPort() {
 		return port;
 	}

@@ -12,7 +12,7 @@ public class ClientListenerFactoryImpl implements ClientListenerFactory {
 	public ClientListener createClientListener(int portNumber, boolean active) throws IOException {
 		try {
 			return new ClientListener(ServerSocketFactory.getDefault().createServerSocket(portNumber),
-					new ThreadFactoryImpl(), active);
+					new ThreadFactoryImpl(), active, new ClientThreadFactoryImpl());
 		} catch (IOException e) {
 			throw new IOException(e);
 		}

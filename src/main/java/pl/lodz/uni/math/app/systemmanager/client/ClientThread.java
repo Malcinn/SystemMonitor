@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.lodz.uni.math.app.systemmanager.shared.CommunicationProtocol;
+import pl.lodz.uni.math.app.systemmanager.shared.SystemInfo;
+import pl.lodz.uni.math.app.systemmanager.shared.services.SystemInfoFactory;
 
 public class ClientThread implements Runnable {
 
@@ -20,8 +22,11 @@ public class ClientThread implements Runnable {
 
 	private ObjectInputStream in = null;
 
-	public ClientThread(Socket socket) throws IOException {
+	private SystemInfoFactory systemInfoFactory = null;
+	
+	public ClientThread(Socket socket, SystemInfoFactory systemInfoFactory) throws IOException {
 		this.socket = socket;
+		this.systemInfoFactory = systemInfoFactory;
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
@@ -42,13 +47,12 @@ public class ClientThread implements Runnable {
 			Object response = processRequest(request);
 			sendResponse(response);
 		} catch (ClassNotFoundException | IOException e) {
-			log.error("Error ocured while ", e);
+			log.error("Error ocured while runing run() method. Exception: ", e);
 		} finally {
 			try {
 				closeConnections();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Error ocured while closing the connections. Exception: ", e);
 			}
 		}
 	}
@@ -90,7 +94,7 @@ public class ClientThread implements Runnable {
 	private Object processRequest(CommunicationProtocol request) {
 		if (request != null) {
 			if (request.equals(CommunicationProtocol.GET)) {
-				
+				return systemInfoFactory.createSystemInfo();
 			}
 		}
 		return null;

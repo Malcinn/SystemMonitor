@@ -8,22 +8,28 @@ import java.util.concurrent.ThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import pl.lodz.uni.math.app.systemmanager.client.services.ClientThreadFactory;
 import pl.lodz.uni.math.app.systemmanager.shared.SocketInfo;
+import pl.lodz.uni.math.app.systemmanager.shared.services.SystemInfoFactory;
 
 public class ClientListener implements Runnable {
 
 	private static final Logger log = LogManager.getLogger(ClientListener.class.getName());
-	
+
 	private ServerSocket serverSocket = null;
 
 	private ThreadFactory threadFactory = null;
-	
+
+	private ClientThreadFactory clientThreadFactory = null;
+
 	private boolean active = true;
 
-	public ClientListener(ServerSocket serverSocket, ThreadFactory threadFactory, boolean active) {
+	public ClientListener(ServerSocket serverSocket, ThreadFactory threadFactory, boolean active,
+			ClientThreadFactory clientThreadFactory) {
 		this.serverSocket = serverSocket;
 		this.threadFactory = threadFactory;
 		this.active = active;
+		this.clientThreadFactory = clientThreadFactory;
 	}
 
 	@Override
@@ -31,10 +37,15 @@ public class ClientListener implements Runnable {
 		while (isActive()) {
 			try {
 				Socket socket = serverSocket.accept();
-				ClientThread clientThread = new ClientThread(socket);
+				ClientThread clientThread = clientThreadFactory.createClientThread(socket);
 				threadFactory.newThread(clientThread).start();
 			} catch (IOException e) {
 				log.error("Error ocurred while performing run method of the ClientListener object. Exception: ", e);
+				try {
+					closeConnections();
+				} catch (IOException e1) {
+					log.error("IOException ecurred while closing the connections. Exception:", e1);
+				}
 			}
 		}
 	}
@@ -51,4 +62,12 @@ public class ClientListener implements Runnable {
 		this.active = active;
 	}
 
+	private void closeConnections() throws IOException {
+		try {
+			this.setActive(false);
+			serverSocket.close();
+		} catch (IOException e) {
+			throw new IOException(e);
+		}
+	}
 }
