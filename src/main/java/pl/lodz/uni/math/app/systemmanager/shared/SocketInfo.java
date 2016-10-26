@@ -7,6 +7,7 @@ import java.net.Socket;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -17,9 +18,9 @@ public class SocketInfo implements Serializable {
 	private static final long serialVersionUID = 1169939767666549706L;
 
 	@Id
-	@GeneratedValue(generator = "increment")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@GenericGenerator(name = "increment", strategy = "increment")
-	private long id;
+	private int id;
 
 	@Column
 	private String hostName = null;
@@ -45,11 +46,11 @@ public class SocketInfo implements Serializable {
 		setPort(serverSocket.getLocalPort());
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -57,7 +58,7 @@ public class SocketInfo implements Serializable {
 		return hostName;
 	}
 
-	private void setHostName(String hostName) {
+	public void setHostName(String hostName) {
 		this.hostName = hostName;
 	}
 
@@ -65,7 +66,7 @@ public class SocketInfo implements Serializable {
 		return port;
 	}
 
-	private void setPort(int port) {
+	public void setPort(int port) {
 		this.port = port;
 	}
 

@@ -1,57 +1,138 @@
 package pl.lodz.uni.math.app.systemmanager;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import pl.lodz.uni.math.app.systemmanager.client.ClientSender;
 import pl.lodz.uni.math.app.systemmanager.client.services.ClientSenderFactory;
 import pl.lodz.uni.math.app.systemmanager.client.services.ClientSenderFactoryImpl;
-import pl.lodz.uni.math.app.systemmanager.server.Server;
-import pl.lodz.uni.math.app.systemmanager.server.services.ServerFactory;
-import pl.lodz.uni.math.app.systemmanager.server.services.ServerFactoryImpl;
+import pl.lodz.uni.math.app.systemmanager.server.ServerListener;
+import pl.lodz.uni.math.app.systemmanager.server.ServerThread;
+import pl.lodz.uni.math.app.systemmanager.server.services.ServerListenerFactory;
+import pl.lodz.uni.math.app.systemmanager.server.services.ServerListenerFactoryImpl;
+import pl.lodz.uni.math.app.systemmanager.server.services.ServerThreadFactory;
+import pl.lodz.uni.math.app.systemmanager.server.services.dao.GenericDao;
 import pl.lodz.uni.math.app.systemmanager.shared.SocketInfo;
+import pl.lodz.uni.math.app.systemmanager.shared.services.ThreadFactoryImpl;
 
-import static pl.lodz.uni.math.app.systemmanager.StaticValues.*;
+import static org.junit.Assert.*;
 
-import java.io.IOException;
+public class ClientServerTest {
 
-public class ClientServerTest extends PersistenceBase{
+	private static final Logger LOG = LogManager.getLogger(ClientServerTest.class.getName());
 
-	private ServerFactory serverFactory = new ServerFactoryImpl();
+	private static final int SERVER_PORT_NUMBER = 2222;
+
+	private static final String SERVER_HOST_NAME = "127.0.0.1";
+
+	private static ServerListenerFactory serverListenerFactory = new ServerListenerFactoryImpl();
+
+	private static ThreadFactory threadFactory = new ThreadFactoryImpl();
+
+	private static GenericDao<SocketInfo> SocketInfoDaoList = new GenericDao<SocketInfo>() {
+
+		private List<SocketInfo> socketInfoList = new ArrayList<>();
+
+		@Override
+		public synchronized void create(SocketInfo entity) {
+			socketInfoList.add(entity);
+		}
+
+		@Override
+		public synchronized SocketInfo update(SocketInfo entity) {
+			SocketInfo socketInfo = socketInfoList.get(entity.getId());
+			socketInfo.setPort(entity.getPort());
+			socketInfo.setHostName(entity.getHostName());
+			return socketInfo;
+		}
+
+		@Override
+		public synchronized void delete(SocketInfo entity) {
+			socketInfoList.remove(entity);
+		}
+
+		@Override
+		public synchronized SocketInfo get(int id) {
+			return socketInfoList.get(id);
+		}
+
+		@Override
+		public synchronized List<SocketInfo> getAll() {
+			return socketInfoList;
+		}
+
+	};
+
+	private static ServerThreadFactory serverThreadFactory = new ServerThreadFactory() {
+
+		@Override
+		public ServerThread newServerThread(Socket socket) throws IOException {
+			return new ServerThread(socket, SocketInfoDaoList);
+		}
+	};
 
 	private ClientSenderFactory clientSenderFactory = new ClientSenderFactoryImpl();
 
-	@Test
-	public void ServerListenAndClientSendDataToIt() {
+	@BeforeClass
+	public static void beforeClass() {
+		ServerListener serverListener;
 		try {
-			Server server = serverFactory.createServer(DEFAULT_SERVER_PORT_NUMBER);
-			server.run();
-
-			ClientSender clientSender = clientSenderFactory.createSender(DEFAULT_SERVER_ADDRESS,
-					DEFAULT_SERVER_PORT_NUMBER);
-			clientSender.sendData(new SocketInfo("test", 1000));
-			clientSender.closeConnections();
-
+			serverListener = serverListenerFactory.createServerListener(SERVER_PORT_NUMBER, threadFactory,
+					serverThreadFactory);
+			threadFactory.newThread(serverListener).start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("While procesing serverListener object. Exception: " + e);
 		}
 	}
 
-	@Test
-	public void ServerListenAndMultipleClientsSendDataToIt() {
-		try {
-			Server server = serverFactory.createServer(DEFAULT_SERVER_PORT_NUMBER+1);
-			server.run();
+	@Before
+	public void setUp() {
+		SocketInfoDaoList.getAll().clear();
+	}
 
-			for (int i = 0; i < 10; i++) {
-				ClientSender clientSender = clientSenderFactory.createSender(DEFAULT_SERVER_ADDRESS,
-						DEFAULT_SERVER_PORT_NUMBER+1);
-				clientSender.sendData(new SocketInfo("test" + i, 1000));
+	public void clientsSendData(int numberOfClients) {
+		try {
+			for (int i = 0; i < numberOfClients; i++) {
+				ClientSender clientSender = clientSenderFactory.createSender(SERVER_HOST_NAME, SERVER_PORT_NUMBER);
+				clientSender.sendData(new SocketInfo("test" + i, 0000));
 				clientSender.closeConnections();
 			}
-
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("While procesing ClientsSendData() method. Exception: " + e);
 		}
 	}
+
+	@Test
+	public void SingleClientSendsData() {
+		try {
+			int numberOfClients = 1;
+			clientsSendData(numberOfClients);
+			while (SocketInfoDaoList.getAll().size() != numberOfClients);
+			assertEquals(numberOfClients, SocketInfoDaoList.getAll().size());
+		} catch (Exception e) {
+			LOG.error("While procesing SingleClientSendsData() method. Exception: " + e);
+		}
+	}
+
+	@Test
+	public void MultipleClientsSendsData() {
+		try {
+			int numberOfClients = 100;
+			clientsSendData(numberOfClients);
+			while (SocketInfoDaoList.getAll().size() != numberOfClients);
+			assertEquals(numberOfClients, SocketInfoDaoList.getAll().size());
+		} catch (Exception e) {
+			LOG.error("While procesing MultipleClientsSendsData() method. Exception: " + e);
+		}
+	}
+
 }

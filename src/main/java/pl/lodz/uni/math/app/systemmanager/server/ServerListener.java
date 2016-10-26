@@ -22,10 +22,9 @@ public class ServerListener implements Runnable {
 
 	private ServerThreadFactory serverThreadFactory = null;
 
-	public ServerListener(ServerSocket serverSocket, boolean active, ThreadFactory threadFactory,
+	public ServerListener(ServerSocket serverSocket, ThreadFactory threadFactory,
 			ServerThreadFactory serverThreadFactory) {
 		this.serverSocket = serverSocket;
-		this.setActive(active);
 		this.threadFactory = threadFactory;
 		this.serverThreadFactory = serverThreadFactory;
 	}

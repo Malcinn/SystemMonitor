@@ -15,30 +15,30 @@ public class DataBaseGenericDaoImpl<T> implements GenericDao<T>{
 		this.entityManager = entityManager;
 	}
 
-	public void create(T entity) {
+	public synchronized void create(T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.persist(entity);
 		entityManager.getTransaction().commit();
 	}
 
-	public T update(T entity) {
+	public synchronized T update(T entity) {
 		entityManager.getTransaction().begin();
 		T tmpEntity = entityManager.merge(entity);
 		entityManager.getTransaction().commit();
 		return tmpEntity;
 	}
 
-	public void delete(T entity) {
+	public synchronized void delete(T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.remove(entity);
 		entityManager.getTransaction().commit();
 	}
 
-	public T get(long id) {
+	public synchronized T get(int id) {
 		return entityManager.find(clazz, id);
 	}
 
-	public List<T> getAll() {
+	public synchronized List<T> getAll() {
 		return entityManager.createQuery("from " + clazz.getName()).getResultList();
 	}
 

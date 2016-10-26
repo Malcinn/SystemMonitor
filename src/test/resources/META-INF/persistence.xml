@@ -11,7 +11,7 @@
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>org.hibernate.documentation.userguide.Document</class>
+        
 
         <properties>
             <property name="javax.persistence.jdbc.driver"

@@ -21,7 +21,7 @@ public class Server {
 
 	public void run() throws IOException {
 		try {
-			ServerListener serverListener = serverListenerFactory.createServerListener(localPortNumber, true);
+			ServerListener serverListener = serverListenerFactory.createServerListener(localPortNumber);
 			threadFactory.newThread(serverListener).start();
 		} catch (Exception e) {
 			throw new IOException(e);
