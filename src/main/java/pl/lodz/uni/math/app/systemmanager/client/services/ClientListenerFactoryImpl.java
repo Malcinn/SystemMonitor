@@ -9,10 +9,10 @@ import pl.lodz.uni.math.app.systemmanager.shared.services.ThreadFactoryImpl;
 
 public class ClientListenerFactoryImpl implements ClientListenerFactory {
 
-	public ClientListener createClientListener(int portNumber, boolean active) throws IOException {
+	public ClientListener createClientListener(int portNumber) throws IOException {
 		try {
 			return new ClientListener(ServerSocketFactory.getDefault().createServerSocket(portNumber),
-					new ThreadFactoryImpl(), active, new ClientThreadFactoryImpl());
+					new ThreadFactoryImpl(), new ClientThreadFactoryImpl());
 		} catch (IOException e) {
 			throw new IOException(e);
 		}

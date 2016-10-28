@@ -8,6 +8,8 @@ import java.util.concurrent.ThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import pl.lodz.uni.math.app.systemmanager.server.services.dao.MyEntityManagerFactory;
+
 public class ServerListener implements Runnable {
 
 	private static final Logger log = LogManager.getLogger(ServerListener.class.getName());
@@ -38,6 +40,7 @@ public class ServerListener implements Runnable {
 				log.error("IOException ecurred while performing run() method of ServerListener object. Exception:", e);
 				try {
 					closeConnections();
+					MyEntityManagerFactory.closeEntityManagerFactory();
 				} catch (IOException e1) {
 					log.error("IOException ecurred while closing the connections. Exception:", e1);
 				}

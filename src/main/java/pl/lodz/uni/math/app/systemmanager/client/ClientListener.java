@@ -9,8 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.lodz.uni.math.app.systemmanager.client.services.ClientThreadFactory;
+import pl.lodz.uni.math.app.systemmanager.server.services.dao.MyEntityManagerFactory;
 import pl.lodz.uni.math.app.systemmanager.shared.SocketInfo;
-import pl.lodz.uni.math.app.systemmanager.shared.services.SystemInfoFactory;
 
 public class ClientListener implements Runnable {
 
@@ -24,11 +24,10 @@ public class ClientListener implements Runnable {
 
 	private boolean active = true;
 
-	public ClientListener(ServerSocket serverSocket, ThreadFactory threadFactory, boolean active,
+	public ClientListener(ServerSocket serverSocket, ThreadFactory threadFactory,
 			ClientThreadFactory clientThreadFactory) {
 		this.serverSocket = serverSocket;
 		this.threadFactory = threadFactory;
-		this.active = active;
 		this.clientThreadFactory = clientThreadFactory;
 	}
 
@@ -43,6 +42,7 @@ public class ClientListener implements Runnable {
 				log.error("Error ocurred while performing run method of the ClientListener object. Exception: ", e);
 				try {
 					closeConnections();
+					MyEntityManagerFactory.closeEntityManagerFactory();
 				} catch (IOException e1) {
 					log.error("IOException ecurred while closing the connections. Exception:", e1);
 				}

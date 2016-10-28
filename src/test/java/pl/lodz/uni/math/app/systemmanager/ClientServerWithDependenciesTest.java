@@ -21,6 +21,11 @@ public class ClientServerWithDependenciesTest extends PersistenceBase{
 
 	private ClientSenderFactory clientSenderFactory = new ClientSenderFactoryImpl();
 	
+	@Override
+	public void tearDown() {
+		super.tearDown();
+	}
+	
 	@Test
 	public void ServerListenAndSingleClientSendDataToIt() {
 		try {
@@ -47,9 +52,9 @@ public class ClientServerWithDependenciesTest extends PersistenceBase{
 				clientSender.sendData(new SocketInfo("test" + i, 1000));
 				clientSender.closeConnections();
 			}
-			MyEntityManagerFactory.closeEntityManagerFactory();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		MyEntityManagerFactory.closeEntityManagerFactory();
 	}
 }

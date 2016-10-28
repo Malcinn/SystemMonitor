@@ -4,13 +4,13 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-public class DataBaseGenericDaoImpl<T> implements GenericDao<T>{
+public class DatabaseGenericDaoImpl<T> implements GenericDao<T>{
 
 	private Class<T> clazz;
 	
 	private EntityManager entityManager;
 	
-	public DataBaseGenericDaoImpl(Class<T> clazz, EntityManager entityManager) {
+	public DatabaseGenericDaoImpl(Class<T> clazz, EntityManager entityManager) {
 		this.clazz = clazz;
 		this.entityManager = entityManager;
 	}

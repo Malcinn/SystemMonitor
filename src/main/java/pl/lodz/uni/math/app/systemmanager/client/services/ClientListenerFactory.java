@@ -6,6 +6,6 @@ import pl.lodz.uni.math.app.systemmanager.client.ClientListener;
 
 public interface ClientListenerFactory {
 
-	public ClientListener createClientListener(int portNumber, boolean active) throws IOException;
+	public ClientListener createClientListener(int portNumber) throws IOException;
 
 }

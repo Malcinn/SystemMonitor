@@ -43,7 +43,7 @@ public class Client {
 
 	public void run() throws IOException, ClassNotFoundException {
 		try {
-			ClientListener clientListener = clientListenerFactory.createClientListener(localPortNumber, true);
+			ClientListener clientListener = clientListenerFactory.createClientListener(localPortNumber);
 			threadFactory.newThread(clientListener).start();
 			ClientSender sender = senderFactory.createSender(serverAddress, serverPortNumber);
 			sender.sendData(clientListener.getSocketInfo());
