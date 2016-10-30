@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import pl.lodz.uni.math.app.systemmanager.client.ClientThread;
-import pl.lodz.uni.math.app.systemmanager.shared.services.SystemInfoFactory;
+import pl.lodz.uni.math.app.systemmanager.shared.SystemInfoFactory;;
 
 public interface ClientThreadFactory {
 

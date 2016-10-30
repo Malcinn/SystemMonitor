@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import pl.lodz.uni.math.app.systemmanager.shared.CommunicationProtocol;
 import pl.lodz.uni.math.app.systemmanager.shared.SystemInfo;
-import pl.lodz.uni.math.app.systemmanager.shared.services.SystemInfoFactory;
+import pl.lodz.uni.math.app.systemmanager.shared.SystemInfoFactory;
 
 public class ClientThread implements Runnable {
 
