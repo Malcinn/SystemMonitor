@@ -79,5 +79,22 @@
 			<artifactId>hsqldb</artifactId>
 			<version>2.3.4</version>
 		</dependency>
+
+		<!-- dependencies for RESTfull web service -->
+
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-grizzly2-http -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+			<version>2.23.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-moxy -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+			<version>2.23.2</version>
+		</dependency>
+
 	</dependencies>
 </project>

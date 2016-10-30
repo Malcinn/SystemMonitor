@@ -47,7 +47,16 @@ public class HsqldbServer extends Server{
 		return super.stop();
 	}
 	
-	public Connection getConnection() throws SQLException {
-		return  DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:"+PORT_NUMBER+"/"+DB_NAME, USER, PASSWORD);
+	public static void main(String[] args) {
+		HsqldbServer hsqldbServer =  new HsqldbServer();
+		hsqldbServer.start();
+		System.out.println("Hsqldb Server has started. Hit enter to stop it.");
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		hsqldbServer.stop();
 	}
+
 }

@@ -3,6 +3,7 @@ package pl.lodz.uni.math.app.systemmanager.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.ThreadFactory;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,16 +37,16 @@ public class ServerListener implements Runnable {
 				Socket socket = serverSocket.accept();
 				ServerThread serverThread = serverThreadFactory.newServerThread(socket);
 				threadFactory.newThread(serverThread).start();
-			} catch (IOException e) {
-				log.error("IOException ecurred while performing run() method of ServerListener object. Exception:", e);
-				try {
-					closeConnections();
-					MyEntityManagerFactory.closeEntityManagerFactory();
-				} catch (IOException e1) {
-					log.error("IOException ecurred while closing the connections. Exception:", e1);
-				}
+			} catch (IOException e1) {
+				log.error("IOException ecurred while performing run() method of ServerListener object. Exception:", e1);
 			}
 		}
+		try {
+			closeConnections();
+		} catch (IOException e) {
+			log.error("IOException ecurred while closing the connections. Exception:", e);
+		}
+		MyEntityManagerFactory.closeEntityManagerFactory();
 	}
 
 	public boolean isActive() {

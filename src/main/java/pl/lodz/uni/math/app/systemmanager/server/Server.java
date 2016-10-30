@@ -11,6 +11,8 @@ public class Server {
 
 	private ThreadFactory threadFactory = null;
 
+	private ServerListener serverListener = null;
+	
 	public Server(int localPortNumber, ServerListenerFactory serverListenerFactory, ThreadFactory threadFactory) {
 		this.localPortNumber = localPortNumber;
 		this.serverListenerFactory = serverListenerFactory;
@@ -19,12 +21,17 @@ public class Server {
 
 	public void run() throws IOException {
 		try {
-			ServerListener serverListener = serverListenerFactory.createServerListener(localPortNumber);
+			serverListener = serverListenerFactory.createServerListener(localPortNumber);
 			threadFactory.newThread(serverListener).start();
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
-		
+	}
+	
+	public void shutDown() {
+		if (serverListener != null) {
+			serverListener.setActive(false);
+		}
 	}
 
 }

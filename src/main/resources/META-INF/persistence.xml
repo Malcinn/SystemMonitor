@@ -6,13 +6,11 @@
 
     <persistence-unit name="PU">
         <description>
-            Persistence unit for project
+            Persistence unit for testsing project
         </description>
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-		<class>pl.lodz.uni.math.app.systemmanager.shared.SocketInfo</class>
-		
         <properties>
             <property name="javax.persistence.jdbc.driver"
                       value="org.hsqldb.jdbc.JDBCDriver" />
