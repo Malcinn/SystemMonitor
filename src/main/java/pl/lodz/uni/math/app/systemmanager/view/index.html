@@ -8,12 +8,12 @@
 		<div id="top">
 			<button ng-click="getSocketInfoList()">Refresh list</button>
 			<select id="selectList">
-				<option ng-repeat="x in myData" value="{{ x }}">{{
-					x.hostName + ':' + x.port }}</option>
+				<option ng-repeat="socket in sockets" value="{{ x }}">{{
+					socket.hostName + ':' + socket.port }}</option>
 			</select>
 			<button ng-click="getSystemInfo()">Get data</button>
 		</div>
-		
+
 		<div id="content">
 			<div class="component">
 				<p>CPU</p>

@@ -5,7 +5,7 @@ app.controller('myCtrl', function($scope, $http) {
 	
 	$scope.getSocketInfoList = function() {
 		$http.get(socketInfoList).then(function(response) {
-			$scope.myData = response.data;
+			$scope.sockets = response.data;
 		});
 	};
 
