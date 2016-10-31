@@ -1,0 +1,15 @@
+body {
+	background-color:#3586a9;
+}
+
+#top {
+	background-color:#84E06C;
+	padding: 5px;
+	margin: 5px;
+}
+
+.component {
+	background-color:#ACEE9A;
+	padding: 5px;
+	margin: 5px;
+}

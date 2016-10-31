@@ -10,7 +10,12 @@ app.controller('myCtrl', function($scope, $http) {
 	};
 
 	$scope.getSystemInfo = function() {
-		systemInfoURL = getSystemInfoURL("127.0.0.1", 2223);
+		var selectList= document.getElementById("selectList");
+		var elem = selectList.options[selectList.selectedIndex].value;
+		var jsonElem = JSON.parse(elem);
+		$scope.info = jsonElem;
+		//systemInfoURL = getSystemInfoURL("127.0.0.1", 2223);
+		systemInfoURL = getSystemInfoURL(jsonElem.hostName, jsonElem.port);
 		$http.get(systemInfoURL).then(function(response) {
 			$scope.responseData = response.data;
 			
