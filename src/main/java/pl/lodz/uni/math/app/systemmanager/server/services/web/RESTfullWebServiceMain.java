@@ -23,15 +23,15 @@ public class RESTfullWebServiceMain {
 		// in com.example package
 		final ResourceConfig rc = new ResourceConfig()
 				.packages("pl.lodz.uni.math.app.systemmanager.server.services.web");
+		rc.register(pl.lodz.uni.math.app.systemmanager.server.services.web.CORSResponseFilter.class);
 
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI
-		System.out.println(String.format(
-				"Jersey app started with WADL available at " + "%sapplication.wadl\n",
-				BASE_URI));
+		System.out.println(
+				String.format("Jersey app started with WADL available at " + "%sapplication.wadl\n", BASE_URI));
 		return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
 	}
-	
+
 	public static void shutDownServer(HttpServer server) {
 		server.shutdown();
 	}

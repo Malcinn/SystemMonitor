@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="functions.js"></script>
+<body>
+	<div ng-app="myApp" ng-controller="myCtrl">
+		<div id="top">
+			<button ng-click="getSocketInfoList()">Refresh list</button>
+			<select id="selectList">
+				<option ng-repeat="x in myData" value="{{ x }}">{{
+					x.hostName + ':' + x.port }}</option>
+			</select>
+			<button ng-click="getSystemInfo()">Get data</button>
+		</div>
+		
+		<div id="content">
+			<div class="component">
+				<p>CPU</p>
+				<ul>
+					<li>model: {{responseData.cpu.model}}</li>
+					<li>vendor: {{responseData.cpu.vendor}}</li>
+					<li>Mhz: {{responseData.cpu.mhz}}</li>
+					<li>cores: {{responseData.cpu.cores}}</li>
+					<li>load average: {{responseData.cpu.loadAverage}}</li>
+				</ul>
+			</div>
+
+			<div class="component">
+				<p>fileSystems:</p>
+				<ul ng-repeat="fileSystem in responseData.fileSystems">
+					<li>name: {{fileSystem.name}}</li>
+					<li>total: {{fileSystem.total}}</li>
+					<li>free: {{fileSystem.free}}</li>
+				</ul>
+			</div>
+
+			<div class="component">
+				<p>Memory:</p>
+				<ul>
+					<li>total: {{responseData.memory.total}}</li>
+					<li>free: {{responseData.memory.free}}</li>
+				</ul>
+			</div>
+
+			<div class="component">
+				<p>networkInterfaces:</p>
+				<ul ng-repeat="networkInterface in responseData.networkInterfaces">
+					<li>name: {{networkInterface.name}}</li>
+					<li>type: {{networkInterface.type}}</li>
+					<li>address: {{networkInterface.address}}</li>
+					<li>hardware address: {{networkInterface.hardwareAddress}}</li>
+					<li>rx bytes: {{networkInterface.rxBytes}}</li>
+					<li>tx bytes: {{networkInterface.txBytes}}</li>
+				</ul>
+			</div>
+			
+			<div class="component">
+				<p>OS:</p>
+				<ul>
+					<li>name: {{responseData.os.name}}</li>
+					<li>up time: {{responseData.os.upTime}}</li>
+				</ul>
+			</div>
+			
+			<div class="component">
+				<p>Users:</p>
+				<ul ng-repeat="user in responseData.users">
+					<li>name: {{user.name}}</li>
+					<li>device: {{user.device}}</li>
+					<li>up time: {{user.upTime}}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
