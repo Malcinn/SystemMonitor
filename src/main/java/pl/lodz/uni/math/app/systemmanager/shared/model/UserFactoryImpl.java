@@ -27,7 +27,6 @@ public class UserFactoryImpl extends ComponentFactory implements UserFactory {
 					user.setName(who.getUser());
 					user.setDevice(who.getDevice());
 					users.add(user);
-					user.setUpTime(who.getTime());
 				} catch (Throwable t) {
 					LOG.error("Error ocurred while gatherig information about User. Throwable: " + t.getMessage());
 				}

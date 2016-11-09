@@ -2,7 +2,7 @@ package pl.lodz.uni.math.app.systemmanager.shared.model;
 
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 6214373918231350071L;
 
@@ -10,17 +10,14 @@ public class User implements Serializable{
 
 	private String device;
 
-	private double upTime;
-
 	public User() {
 		super();
 	}
 
-	public User(String name, String device, double upTime) {
+	public User(String name, String device) {
 		super();
 		this.name = name;
 		this.device = device;
-		this.upTime = upTime;
 	}
 
 	public String getName() {
@@ -39,16 +36,8 @@ public class User implements Serializable{
 		this.device = device;
 	}
 
-	public double getUpTime() {
-		return upTime;
-	}
-
-	public void setUpTime(double upTime) {
-		this.upTime = upTime;
-	}
-
 	@Override
 	public String toString() {
-		return "name: " + name + ", device: " + device + ", upTime: " + upTime;
+		return "name: " + name + ", device: " + device;
 	}
 }

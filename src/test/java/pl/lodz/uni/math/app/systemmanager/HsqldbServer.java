@@ -11,9 +11,9 @@ import org.hsqldb.server.ServerAcl.AclFormatException;
 
 public class HsqldbServer extends Server{
 
-	public static final String DATABASE = "mem:testdb";
+	public static final String DATABASE = "mem:systeminfodb";
 
-	public static final String DB_NAME = "testdb";
+	public static final String DB_NAME = "systeminfodb";
 
 	public static final String USER = "SA";
 
