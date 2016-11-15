@@ -40,13 +40,13 @@ public class ClientListener implements Runnable {
 				threadFactory.newThread(clientThread).start();
 			} catch (IOException e) {
 				log.error("Error ocurred while performing run method of the ClientListener object. Exception: ", e);
-				try {
-					closeConnections();
-					MyEntityManagerFactory.closeEntityManagerFactory();
-				} catch (IOException e1) {
-					log.error("IOException ecurred while closing the connections. Exception:", e1);
-				}
 			}
+		}
+		try {
+			closeConnections();
+			MyEntityManagerFactory.closeEntityManagerFactory();
+		} catch (IOException e1) {
+			log.error("IOException ecurred while closing the connections. Exception:", e1);
 		}
 	}
 

@@ -25,23 +25,39 @@
 					<li>vendor: {{responseData.cpu.vendor}}</li>
 					<li>Mhz: {{responseData.cpu.mhz}}</li>
 					<li>cores: {{responseData.cpu.cores}}</li>
-					<li>load average: {{responseData.cpu.loadAverage}}</li>
+					<li>load average: {{responseData.cpu.loadAverage * 100}} %</li>
 				</ul>
 			</div>
 			<div class="component">
 				<p>fileSystems:</p>
 				<ul ng-repeat="fileSystem in responseData.fileSystems">
 					<li>name: {{fileSystem.name}}</li>
-					<li>total: {{fileSystem.total}}</li>
-					<li>free: {{fileSystem.free}}</li>
+					<li>total: 
+						<span ng-if="fileSystem.total > 1048576"> {{(fileSystem.total / 1048576).toFixed(2)}} GB</span>
+						<span ng-if="fileSystem.total <= 1048576 && fileSystem.total >= 1024">{{(fileSystem.total / 1024).toFixed(2)}} MB </span>
+						<span ng-if="fileSystem.total < 1024">{{(fileSystem.total).toFixed(2)}} KB </span>
+					</li>
+					<li>free: 
+						<span ng-if="fileSystem.free > 1048576"> {{(fileSystem.free / 1048576).toFixed(2)}} GB</span>
+						<span ng-if="fileSystem.free <= 1048576 && fileSystem.free >= 1024">{{(fileSystem.free / 1024).toFixed(2)}} MB </span>
+						<span ng-if="fileSystem.free < 1024">{{(fileSystem.free).toFixed(2)}} KB </span>
+					</li>
 				</ul>
 			</div>
 
 			<div class="component">
 				<p>Memory:</p>
 				<ul>
-					<li>total: {{responseData.memory.total}}</li>
-					<li>free: {{responseData.memory.free}}</li>
+					<li>total:  
+						<span ng-if="responseData.memory.total > 1073741824"> {{(responseData.memory.total / 1073741824).toFixed(2)}} GB</span>
+						<span ng-if="responseData.memory.total <= 1073741824  && responseData.memory.total >= 1048576">{{(responseData.memory.total / 1048576).toFixed(2)}} MB </span>
+						<span ng-if="responseData.memory.total < 1048576">{{(responseData.memory.total.free/ 1024).toFixed(2)}} KB </span>
+					</li>
+					<li>free: 
+						<span ng-if="responseData.memory.free > 1073741824"> {{(responseData.memory.free / 1073741824).toFixed(2)}} GB</span>
+						<span ng-if="responseData.memory.free <= 1073741824 && responseData.memory.free >= 1048576">{{(responseData.memory.free / 1048576).toFixed(2)}} MB </span>
+						<span ng-if="responseData.memory.free < 1048576">{{(responseData.memory.free / 1024).toFixed(2)}} KB </span>
+					</li>
 				</ul>
 			</div>
 
@@ -52,8 +68,18 @@
 					<li>type: {{networkInterface.type}}</li>
 					<li>address: {{networkInterface.address}}</li>
 					<li>hardware address: {{networkInterface.hardwareAddress}}</li>
-					<li>rx bytes: {{networkInterface.rxBytes}}</li>
-					<li>tx bytes: {{networkInterface.txBytes}}</li>
+					<li>rx bytes: 
+						<span ng-if="networkInterface.rxBytes > 1073741824"> {{(networkInterface.rxBytes / 1073741824).toFixed(2)}} GB</span>
+						<span ng-if="networkInterface.rxBytes <= 1073741824 && networkInterface.rxBytes >= 1048576">{{(networkInterface.rxBytes / 1048576).toFixed(2)}} MB </span>
+						<span ng-if="networkInterface.rxBytes < 1048576 && networkInterface.rxBytes >= 1024">{{(networkInterface.rxBytes / 1024).toFixed(2)}} KB </span>
+						<span ng-if="networkInterface.rxBytes < 1024">{{(networkInterface.rxBytes / 1024).toFixed(2)}} B </span>
+					</li>
+					<li>tx bytes: 
+					<span ng-if="networkInterface.txBytes > 1073741824"> {{(networkInterface.txBytes / 1073741824).toFixed(2)}} GB</span>
+						<span ng-if="networkInterface.txBytes <= 1073741824 && networkInterface.txBytes >= 1048576">{{(networkInterface.txBytes / 1048576).toFixed(2)}} MB </span>
+						<span ng-if="networkInterface.txBytes < 1048576 && networkInterface.txBytes >= 1024">{{(networkInterface.txBytes / 1024).toFixed(2)}} KB </span>
+						<span ng-if="networkInterface.txBytes < 1024">{{(networkInterface.txBytes / 1024).toFixed(2)}} B </span>
+					</li>
 				</ul>
 			</div>
 
@@ -61,7 +87,9 @@
 				<p>OS:</p>
 				<ul>
 					<li>name: {{responseData.os.name}}</li>
-					<li>up time: {{responseData.os.upTime}}</li>
+					<li>up time: {{Math.floor(responseData.os.upTime / 60 / 60)}} h 
+					{{Math.floor(((responseData.os.upTime / 60 / 60) - Math.floor(responseData.os.upTime / 60 / 60)) * 60)}} m
+					</li>
 				</ul>
 			</div>
 
@@ -70,7 +98,6 @@
 				<ul ng-repeat="user in responseData.users">
 					<li>name: {{user.name}}</li>
 					<li>device: {{user.device}}</li>
-					<li>up time: {{user.upTime}}</li>
 				</ul>
 			</div>
 		</div>

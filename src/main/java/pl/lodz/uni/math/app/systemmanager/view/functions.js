@@ -3,6 +3,8 @@ var socketInfoList = "http://localhost:8080/manager/myresource/socketInfoList";
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
 	
+	$scope.Math = window.Math;
+	
 	$scope.getSocketInfoList = function() {
 		$http.get(socketInfoList).then(function(response) {
 			$scope.sockets = response.data;
